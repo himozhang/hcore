@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ideal.core.user.dao.UserDao">
+
+ <resultMap id="BaseResultMap" type="User" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <!--<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATOR_ID" property="creatorId" jdbcType="VARCHAR" />
+    <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="MODIFIER_ID" property="modifierId" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+    <result column="PHOTO" property="photo" jdbcType="VARCHAR" />
+    <result column="OLDPHOTO" property="oldphoto" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="SORT" property="sort" jdbcType="DECIMAL" />
+    <collection property="organizations" ofType="Organization" column="id" select="com.ricore.core.organization.dao.OrganizationMapper.getOrganizationsByUserId"/>
+    <collection property="roles" ofType="Role" column="id" select="com.ideal.core.role.dao.RoleDao.getRolesByUserId"/>-->
+    <collection property="roles" ofType="Role" column="id" select="com.ideal.core.role.dao.RoleDao.getRolesByUserId"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+  	ID, LOGIN_NAME, PASSWORD
+  <!--
+     ID, LOGIN_NAME, PASSWORD, EMAIL, REAL_NAME, CREATE_TIME, CREATOR_ID, MODIFY_TIME, MODIFIER_ID, 
+    STATE, PHONE,TELEPHONE, PHOTO, OLDPHOTO,  TYPE, LOGIN_TIME,SEX,SORT 
+  --></sql>
+  
+  
+  <!-- <update id="batchUpdate"  parameterType="java.util.List">
+      
+       <foreach collection="list" item="item" index="index" open="begin" close="end;" separator=";">
+                update test 
+                <set>
+                  test=${item.test}+1
+                </set>
+                where id = ${item.id}
+       </foreach>
+          
+    </update> -->
+
+ 
+</mapper>

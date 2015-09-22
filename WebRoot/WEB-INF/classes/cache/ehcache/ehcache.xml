@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance
+http://www.springmodules.org/schema/cache/springmodules-cache.xsd 
+http://www.springmodules.org/schema/cache/springmodules-ehcache.xsd"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+	monitoring="autodetect" dynamicConfig="true">
+
+	<diskStore path="/home/ehcache" />
+
+	<transactionManagerLookup
+		class="net.sf.ehcache.transaction.manager.DefaultTransactionManagerLookup"
+		properties="jndiName=java:/TransactionManager" propertySeparator=";" />
+	
+	<!-- 本地缓存同步监听设置 -->
+	<cacheManagerPeerListenerFactory       
+        class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"       
+        properties="hostName=localhost,port=40031,socketTimeoutMillis=120000" />       
+		
+	<!-- 远程缓存同步监听设置 -->
+	<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+	properties="peerDiscovery=manual, rmiUrls=//localhost:40001/DataDictCache|//localhost:40001/URL_Role_Cache"/>
+
+  <!-- 
+        配置自定义缓存
+        maxElementsInMemory：缓存中允许创建的最大对象数
+        eternal：缓存中对象是否为永久的，如果是，超时设置将被忽略，对象从不过期。
+        timeToIdleSeconds：缓存数据的钝化时间，也就是在一个元素消亡之前，
+                    两次访问时间的最大时间间隔值，这只能在元素不是永久驻留时有效，
+                    如果该值是 0 就意味着元素可以停顿无穷长的时间。
+        timeToLiveSeconds：缓存数据的生存时间，也就是一个元素从构建到消亡的最大时间间隔值，
+                    这只能在元素不是永久驻留时有效，如果该值是0就意味着元素可以停顿无穷长的时间。
+        overflowToDisk：内存不足时，是否启用磁盘缓存。
+        memoryStoreEvictionPolicy：缓存满了之后的淘汰算法。
+    -->
+    
+    <!--
+    	 cacheEventListenerFactory : 注册相应的的缓存监听类，用于处理缓存事件，如put,remove,update,和expire
+    	 bootstrapCacheLoaderFactory:指定相应的BootstrapCacheLoader，用于在初始化缓存，以及自动设置。
+    	 
+    	  注意LRU和LFU的区别。
+    	 LFU算法是根据在一段时间里数据项被使用的次数选择出最少使用的数据项，即根据使用次数的差异来决定。
+    	  而LRU是根据使用时间的差异来决定的。
+    	 memoryStoreEvictionPolicy{
+    	 	FIFO：First In First Out，先进先出,
+    	 	LRU：Least Recently Used，最近最少使用,
+    	 	LFU：Least Frequently Used，最不经常使用
+    	 }
+     -->
+	<defaultCache 
+			maxEntriesLocalHeap="5000" 
+			eternal="false"
+			timeToIdleSeconds="120" 
+			timeToLiveSeconds="120" 
+			overflowToDisk="true"
+			diskSpoolBufferSizeMB="30"
+			maxEntriesLocalDisk="10000000" 
+			diskPersistent="false"
+			diskExpiryThreadIntervalSeconds="120"
+			memoryStoreEvictionPolicy="LRU">
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"   
+        properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,replicateUpdatesViaCopy= false, replicateRemovals= true " />
+		<bootstrapCacheLoaderFactory  
+            class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>  
+	</defaultCache>
+
+    <cache name="DataDictCache"  
+    			maxElementsInMemory="5000"
+    			timeToIdleSeconds="100000" 
+    			timeToLiveSeconds="100000"    
+    			eternal="false" 
+    			overflowToDisk="false"
+    			memoryStoreEvictionPolicy="LFU" >
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"   
+        properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,replicateUpdatesViaCopy= false, replicateRemovals= true " />
+    </cache>
+    
+    <cache name="URL_Role_Cache"  
+    			maxElementsInMemory="5000"
+    			timeToIdleSeconds="100000" 
+    			timeToLiveSeconds="100000"    
+    			eternal="false" 
+    			overflowToDisk="false"
+    			memoryStoreEvictionPolicy="LFU" >
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"   
+        properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,replicateUpdatesViaCopy= false, replicateRemovals= true " />
+    </cache>
+    <cache name="User_Menu_Cache"  
+    			maxElementsInMemory="5000"
+    			timeToIdleSeconds="100000" 
+    			timeToLiveSeconds="100000"    
+    			eternal="false" 
+    			overflowToDisk="false"
+    			memoryStoreEvictionPolicy="LFU" >
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"   
+        properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,replicateUpdatesViaCopy= false, replicateRemovals= true " />
+    </cache>
+    
+    <cache name="User_Role_Cache"  
+    			maxElementsInMemory="5000"
+    			timeToIdleSeconds="100000" 
+    			timeToLiveSeconds="100000"    
+    			eternal="false" 
+    			overflowToDisk="false"
+    			memoryStoreEvictionPolicy="LFU" >
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"   
+        properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,replicateUpdatesViaCopy= false, replicateRemovals= true " />
+    </cache>
+    <cache name="Menu_Cache"  
+    			maxElementsInMemory="5000"
+    			timeToIdleSeconds="100000" 
+    			timeToLiveSeconds="100000"    
+    			eternal="false" 
+    			overflowToDisk="false"
+    			memoryStoreEvictionPolicy="LFU" >
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"   
+        properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,replicateUpdatesViaCopy= false, replicateRemovals= true " />
+    </cache>
+    <cache name="Class_Instance_Cache"  
+    			maxElementsInMemory="5000"
+    			timeToIdleSeconds="100000" 
+    			timeToLiveSeconds="100000"    
+    			eternal="false" 
+    			overflowToDisk="false"
+    			memoryStoreEvictionPolicy="LFU" >
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"   
+        properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,replicateUpdatesViaCopy= false, replicateRemovals= true " />
+    </cache>
+     
+</ehcache>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:spring-applicationContext.xml
+		</param-value>
+	</context-param>
+	
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	
+	<!-- log4j配置 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
+	<!--Spring默认刷新Log4j配置文件的间隔,单位为millisecond-->  
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>60000</param-value>
+	</context-param>
+	<!-- 
+	 <filter> 
+        <filter-name>Log4JResFilter</filter-name> 
+        <filter-class>com.ideal.framework.filter.Log4JResFilter</filter-class> 
+    </filter>
+    <filter-mapping>
+        <filter-name>Log4JResFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    -->
+    <!-- 支持session scope的Spring bean -->
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	<!-- 防止spring内存溢出监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	<listener>   
+	    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>  
+	</listener>  
+	
+	<!-- spring的监听器 -->
+	<listener>
+	    <listener-class>com.ideal.framework.spring.SpringContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!--  http://localhost:8080/ricore/druid/index.html  阿里巴巴数据库监控地址-->
+	 <servlet>
+	      <servlet-name>DruidStatView</servlet-name>
+	      <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+	  </servlet>
+	  <servlet-mapping>
+	      <servlet-name>DruidStatView</servlet-name>
+	      <url-pattern>/druid/*</url-pattern>
+	  </servlet-mapping>
+	  
+	  <!--　浏览器不支持put,delete等method,由该filter将/blog?_method=delete转换为标准的http　delete方法　-->
+	　 <filter>
+		　 <filter-name>HiddenHttpMethodFilter</filter-name>
+		　 <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	　 </filter>
+	
+	　 <filter-mapping>
+		　 <filter-name>HiddenHttpMethodFilter</filter-name>
+		　 <servlet-name>springmvc</servlet-name>
+	　 </filter-mapping>
+	
+		<!--GZIPFilter压缩定义 设置此项时tk-filters.properties的GZIPFilter.Enabled=true才可用-->
+		<filter>
+			<filter-name>GZIPFilter</filter-name>
+			<filter-class>com.tacitknowledge.filters.gzipfilter.GZIPFilter</filter-class>
+		</filter>
+		<filter-mapping>
+			<filter-name>GZIPFilter</filter-name>
+			<url-pattern>*.js</url-pattern>
+		</filter-mapping>
+		<filter-mapping>
+			<filter-name>GZIPFilter</filter-name>
+			<url-pattern>*.css</url-pattern>
+		</filter-mapping>
+	
+		<!--CacheFilter缓存定义 设置此项时tk-filters.properties的CacheFilter.Enabled=true才可用-->
+		  <filter>
+		    <filter-name>CacheFilter</filter-name>
+		    <filter-class>com.tacitknowledge.filters.cache.CacheHeaderFilter</filter-class>
+		  </filter>
+		  <!-- CacheFilter 设置自己想要缓存的文件类型-->
+		  <filter-mapping>
+		    <filter-name>CacheFilter</filter-name>
+		    <url-pattern>*.gif</url-pattern>
+		  </filter-mapping>
+		  <filter-mapping>
+		    <filter-name>CacheFilter</filter-name>
+		    <url-pattern>*.jpg</url-pattern>
+		  </filter-mapping>
+		  <filter-mapping>
+		    <filter-name>CacheFilter</filter-name>
+		    <url-pattern>*.png</url-pattern>
+		  </filter-mapping>
+		  <filter-mapping>
+		    <filter-name>CacheFilter</filter-name>
+		    <url-pattern>*.js</url-pattern>
+		  </filter-mapping>
+		  <filter-mapping>
+		    <filter-name>CacheFilter</filter-name>
+		    <url-pattern>*.css</url-pattern>
+		  </filter-mapping>
+	
+	
+	<!-- 指明对于如下资源文件不采用spring的过滤器 -->
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.css</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.xml</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.swf</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.zip</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.gif</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.jpg</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.png</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.js</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.woff</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.ttf</url-pattern>
+	</servlet-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!-- session超时定义,单位为分钟 -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<!-- 出错页面定义 -->
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/errors/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/errors/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errors/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/errors/403.jsp</location>
+	</error-page>
+	
+</web-app>
