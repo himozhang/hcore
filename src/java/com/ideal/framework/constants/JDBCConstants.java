@@ -20,6 +20,13 @@ public class JDBCConstants {
 	/** 实例化资源文件绑定对象，并传递需要绑定的资源文件名称*/
 	private static BaseConstants baseConstants = new BaseConstants("db");
 	 
+	
+	/** 数据库 ORacle*/
+	public static String DB_ORACLE = baseConstants.getConfig("db.oracle");
+	/** 数据库 Mysql*/
+	public static String DB_MYSQL = baseConstants.getConfig("db.mysql");
+	
+	
 	/** 数据库连接地址*/
 	public static String JDBC_URL = baseConstants.getConfig("db.oracle.url");
 	/** 数据库连接用户名*/
@@ -45,7 +52,7 @@ public class JDBCConstants {
 	 
 	
 	public static void main(String[] args){
-	
+		System.out.println(DB_ORACLE);
 	}
 	 
 }

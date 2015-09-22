@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ideal.core.role.dao.RoleDao;
 import com.ideal.core.role.entity.Role;
 import com.ideal.core.role.service.IRoleService;
+import com.ideal.framework.annotation.ChooseDataSource;
 import com.ideal.framework.basecore.baseDao.BaseMapper;
 import com.ideal.framework.basecore.baseService.impl.BaseServiceImpl;
+import com.ideal.framework.datasource.DataSourceInstances;
 import com.ideal.framework.page.PageView;
 import com.ideal.framework.utils.json.JsonDataGrid;
 
@@ -43,6 +45,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements IRoleServi
 	* @see com.ideal.core.role.service.IRoleService#getPageViewByMapperHelperMYSQL(com.ideal.framework.page.PageView, java.util.Map, java.lang.Class)
 	*/
 	@Override
+	@ChooseDataSource(DataSourceInstances.MYSQL)
 	public JsonDataGrid getPageViewByMapperHelperSaveMYSQL(PageView<Role> page,
 			Map<String, Object> map, Class DTO_Clazz) {
 		return this.getPageViewByMapperHelper(page, map, DTO_Clazz);

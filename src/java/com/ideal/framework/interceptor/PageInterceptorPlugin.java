@@ -1,5 +1,6 @@
 package com.ideal.framework.interceptor;
 
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.util.Map.Entry;
 
 import javax.xml.bind.PropertyException;
 
+import org.aopalliance.intercept.MethodInvocation;
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -24,6 +26,7 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.log4j.Logger;
 
+import com.ideal.framework.annotation.ChooseDataSource;
 import com.ideal.framework.dialet.Dialect;
 import com.ideal.framework.page.PageView;
 import com.ideal.framework.utils.java.ReflectionUtils;
@@ -53,7 +56,8 @@ public class PageInterceptorPlugin implements Interceptor {
 		System.out.println(" 数据库方言变更  -->dialectObject : "+dialectObject.getClass().getSimpleName());
 		PageInterceptorPlugin.dialectObject = dialectObject;
 	}
-
+	
+	 
 	public Object intercept(Invocation ivk) throws Throwable {
 		if (ivk.getTarget() instanceof RoutingStatementHandler) {
 			RoutingStatementHandler statementHandler = (RoutingStatementHandler) ivk

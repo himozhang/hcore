@@ -41,7 +41,7 @@ public class UserController extends BaseController{
 	@RequestMapping("/getremoteUserData")
 	@ResponseBody
 	public JSON  getremoteUserData() throws IOException{
-		DataSourceSwitch.setDataSourceType(DataSourceInstances.MYSQL);
+//		DataSourceSwitch.setDataSourceType(DataSourceInstances.MYSQL);
 		MapperHelper mh = MapperHelper.getMapperHelperInstance();
 		SqlParamsCriterionCollection sqlParamsCriterionCollection = SqlParamsCriterionCollection.getSqlParamsCriterionCollectionInit();
 		sqlParamsCriterionCollection.addParam("id", SQLConstants.EQ,"40284e7140ed630f0140ed8e61d2020f");

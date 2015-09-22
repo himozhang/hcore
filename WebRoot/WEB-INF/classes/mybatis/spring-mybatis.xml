@@ -21,8 +21,8 @@
  	<bean id="dataSource" class="com.ideal.framework.datasource.DataSources">  
         <property name="targetDataSources">  
             <map key-type="java.lang.String">  
-                <entry value-ref="mySqlDataSource" key="MYSQL"></entry>  
-                <entry value-ref="oracleDataSource" key="ORACLE"></entry>  
+                <entry value-ref="mySqlDataSource" key="${db.mysql}"></entry>  
+                <entry value-ref="oracleDataSource" key="${db.oracle}"></entry>  
             </map>  
         </property>  
         <property name="defaultTargetDataSource" ref="oracleDataSource"></property>  
@@ -94,5 +94,8 @@
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	
  
+   
+  
+   
 	
 </beans>
